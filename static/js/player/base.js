@@ -28,6 +28,8 @@ export class Player extends AcGameObject {
 
         this.status = 3;
         // 0: idle, 1: front, 2: back, 3: jump, 4: atk, 5: hit, 6: dead
+        this.animations = new Map();
+        this.frame_current_cnt = 0;
     }
 
     start() {
@@ -48,7 +50,7 @@ export class Player extends AcGameObject {
             space = this.pressed_keys.has('Enter');
         }
 
-        if (this.status === 0 || this.status === 1) {
+        if (this.status === 0 || this.status === 1 || this.status == 2) {
             if (w) {
                 if (d) {
                     this.vx = this.speedx;
@@ -73,7 +75,9 @@ export class Player extends AcGameObject {
     }
 
     update_move() {
-        this.vy += this.gravity;
+        if (this.status === 3) {
+            this.vy += this.gravity;
+        }
 
         this.x += this.vx * this.timedelta / 1000;
         this.y += this.vy * this.timedelta / 1000;
@@ -99,7 +103,21 @@ export class Player extends AcGameObject {
     }
 
     render() {
-        this.ctx.fillStyle = this.color;
-        this.ctx.fillRect(this.x, this.y, this.width, this.height);
+        // this.ctx.fillStyle = this.color;
+        // this.ctx.fillRect(this.x, this.y, this.width, this.height);
+
+        let status = this.status;
+
+        if (this.status === 1 && this.direction * this.vx < 0) {
+            this.status = 2;
+        }
+
+        let obj = this.animations.get(status);
+        if (obj && obj.loaded) {
+            let k = parseInt(this.frame_current_cnt / obj.frame_cnt) % obj.frame_cnt;
+            let image = obj.gif.frames[k].image;
+            this.ctx.drawImage(image, this.x, this.y + obj.offset_y, image.width * obj.scale, image.height * obj.scale);
+        }
+        this.frame_current_cnt ++ ;
     }
 }
