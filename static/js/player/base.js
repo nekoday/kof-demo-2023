@@ -51,7 +51,11 @@ export class Player extends AcGameObject {
         }
 
         if (this.status === 0 || this.status === 1 || this.status == 2) {
-            if (w) {
+            if (space) {
+                this.status = 4;
+                this.vx = 0;
+                this.frame_current_cnt = 0;
+            } else if (w) {
                 if (d) {
                     this.vx = this.speedx;
                 } else if (a) {
@@ -114,10 +118,18 @@ export class Player extends AcGameObject {
 
         let obj = this.animations.get(status);
         if (obj && obj.loaded) {
-            let k = parseInt(this.frame_current_cnt / obj.frame_cnt) % obj.frame_cnt;
+            let k = parseInt(this.frame_current_cnt / obj.frame_rate) % obj.frame_cnt;
             let image = obj.gif.frames[k].image;
             this.ctx.drawImage(image, this.x, this.y + obj.offset_y, image.width * obj.scale, image.height * obj.scale);
         }
+
+        if (this.status === 4 && this.frame_current_cnt >= (obj.frame_cnt - 1) * obj.frame_rate) {
+            // when it's equal, the player will continually play one another frame
+            // so it's better to stop before the last frame
+            this.status = 0;
+            this.frame_current_cnt = 0;
+        }
+
         this.frame_current_cnt ++ ;
     }
 }
