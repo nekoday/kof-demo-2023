@@ -8,15 +8,16 @@ class AcGameObject {
         this.has_call_start = false;
     }
 
-    start() {  // excute once at initialize
-
+    start() {
+        // excute once at initialize
     }
 
-    update() {  // excute at each frame (except the first)
-
+    update() {
+        // excute at each frame (except the first)
     }
 
-    destroy() {  // delete this object
+    destroy() {
+        // delete this object
         for (let i in AC_GAME_OBJECTS) {
             if (AC_GAME_OBJECTS[i] === this) {
                 AC_GAME_OBJECTS.splice(i, 1);
@@ -41,10 +42,8 @@ let AC_GAME_OBJECTS_FRAME = (timestamp) => {
 
     last_timestamp = timestamp;
     requestAnimationFrame(AC_GAME_OBJECTS_FRAME);
-}
+};
 
 requestAnimationFrame(AC_GAME_OBJECTS_FRAME);
 
-export {
-    AcGameObject
-}
+export { AcGameObject };

@@ -1,5 +1,4 @@
-import {AcGameObject} from '/static/js/ac_game_object/base.js';
-
+import { AcGameObject } from "/static/js/ac_game_object/base.js";
 
 export class Player extends AcGameObject {
     constructor(root, info) {
@@ -18,8 +17,8 @@ export class Player extends AcGameObject {
         this.vx = 0;
         this.vy = 0;
 
-        this.speedx = 400;  // ground move speed
-        this.speedy = -1000;  // jump initial speed
+        this.speedx = 400; // ground move speed
+        this.speedy = -1000; // jump initial speed
 
         this.gravity = 50;
 
@@ -32,22 +31,20 @@ export class Player extends AcGameObject {
         this.frame_current_cnt = 0;
     }
 
-    start() {
-
-    }
+    start() {}
 
     update_control() {
         let w, a, d, space;
         if (this.id === 0) {
-            w = this.pressed_keys.has('w');
-            a = this.pressed_keys.has('a');
-            d = this.pressed_keys.has('d');
-            space = this.pressed_keys.has(' ');
+            w = this.pressed_keys.has("w");
+            a = this.pressed_keys.has("a");
+            d = this.pressed_keys.has("d");
+            space = this.pressed_keys.has(" ");
         } else {
-            w = this.pressed_keys.has('ArrowUp');
-            a = this.pressed_keys.has('ArrowLeft');
-            d = this.pressed_keys.has('ArrowRight');
-            space = this.pressed_keys.has('Enter');
+            w = this.pressed_keys.has("ArrowUp");
+            a = this.pressed_keys.has("ArrowLeft");
+            d = this.pressed_keys.has("ArrowRight");
+            space = this.pressed_keys.has("Enter");
         }
 
         if (this.status === 0 || this.status === 1 || this.status == 2) {
@@ -83,8 +80,8 @@ export class Player extends AcGameObject {
             this.vy += this.gravity;
         }
 
-        this.x += this.vx * this.timedelta / 1000;
-        this.y += this.vy * this.timedelta / 1000;
+        this.x += (this.vx * this.timedelta) / 1000;
+        this.y += (this.vy * this.timedelta) / 1000;
 
         if (this.y > 450) {
             this.y = 450;
@@ -118,18 +115,29 @@ export class Player extends AcGameObject {
 
         let obj = this.animations.get(status);
         if (obj && obj.loaded) {
-            let k = parseInt(this.frame_current_cnt / obj.frame_rate) % obj.frame_cnt;
+            let k =
+                parseInt(this.frame_current_cnt / obj.frame_rate) %
+                obj.frame_cnt;
             let image = obj.gif.frames[k].image;
-            this.ctx.drawImage(image, this.x, this.y + obj.offset_y, image.width * obj.scale, image.height * obj.scale);
+            this.ctx.drawImage(
+                image,
+                this.x,
+                this.y + obj.offset_y,
+                image.width * obj.scale,
+                image.height * obj.scale
+            );
         }
 
-        if (this.status === 4 && this.frame_current_cnt >= (obj.frame_cnt - 1) * obj.frame_rate) {
+        if (
+            this.status === 4 &&
+            this.frame_current_cnt >= (obj.frame_cnt - 1) * obj.frame_rate
+        ) {
             // when it's equal, the player will continually play one another frame
             // so it's better to stop before the last frame
             this.status = 0;
             this.frame_current_cnt = 0;
         }
 
-        this.frame_current_cnt ++ ;
+        this.frame_current_cnt++;
     }
 }

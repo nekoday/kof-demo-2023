@@ -1,10 +1,10 @@
-import {GameMap} from '/static/js/game_map/base.js';
-import { Kyo } from '/static/js/player/kyo_kusanagi.js';
+import { GameMap } from "/static/js/game_map/base.js";
+import { Kyo } from "/static/js/player/kyo_kusanagi.js";
 
 class KOF {
     constructor(id) {
-        this.$kof = $('#' + id);
-        
+        this.$kof = $("#" + id);
+
         this.game_map = new GameMap(this);
         this.players = [
             new Kyo(this, {
@@ -13,7 +13,7 @@ class KOF {
                 y: 0,
                 width: 120,
                 height: 200,
-                color: 'blue'
+                color: "blue",
             }),
             new Kyo(this, {
                 id: 1,
@@ -21,12 +21,10 @@ class KOF {
                 y: 0,
                 width: 120,
                 height: 200,
-                color: 'red'
-            })
+                color: "red",
+            }),
         ];
     }
 }
 
-export {
-    KOF
-}
+export { KOF };
