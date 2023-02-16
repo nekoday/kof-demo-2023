@@ -47,7 +47,7 @@ export class Player extends AcGameObject {
             space = this.pressed_keys.has("Enter");
         }
 
-        if (this.status === 0 || this.status === 1 || this.status == 2) {
+        if (this.status === 0 || this.status === 1) {
             if (space) {
                 this.status = 4;
                 this.vx = 0;
@@ -62,6 +62,7 @@ export class Player extends AcGameObject {
                 }
                 this.vy = this.speedy;
                 this.status = 3;
+                this.frame_current_cnt = 0;
             } else if (d) {
                 this.vx = this.speedx;
                 this.status = 1;
@@ -110,7 +111,7 @@ export class Player extends AcGameObject {
         let status = this.status;
 
         if (this.status === 1 && this.direction * this.vx < 0) {
-            this.status = 2;
+            status = 2;
         }
 
         let obj = this.animations.get(status);
@@ -128,14 +129,16 @@ export class Player extends AcGameObject {
             );
         }
 
-        if (
-            this.status === 4 &&
-            this.frame_current_cnt >= (obj.frame_cnt - 1) * obj.frame_rate
-        ) {
-            // when it's equal, the player will continually play one another frame
-            // so it's better to stop before the last frame
-            this.status = 0;
-            this.frame_current_cnt = 0;
+        if (status === 4) {
+            if (
+                this.frame_current_cnt >=
+                (obj.frame_cnt - 1) * obj.frame_rate
+            ) {
+                // when it's equal, the player will continually play one another frame
+                // so it's better to stop before the last frame
+                this.status = 0;
+                // this.frame_current_cnt = 0;
+            }
         }
 
         this.frame_current_cnt++;
