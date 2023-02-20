@@ -29,6 +29,8 @@ export class Player extends AcGameObject {
         // 0: idle, 1: front, 2: back, 3: jump, 4: atk, 5: hit, 6: dead
         this.animations = new Map();
         this.frame_current_cnt = 0;
+
+        this.hp = 100;
     }
 
     start() {}
@@ -98,6 +100,8 @@ export class Player extends AcGameObject {
     }
 
     update_direction() {
+        if (this.status === 6) return;
+
         let players = this.root.players;
         if (players[0] && players[1]) {
             let me = this,
@@ -108,8 +112,17 @@ export class Player extends AcGameObject {
     }
 
     is_attack() {
+        if (this.status === 6) return;
+
         this.status = 5;
         this.frame_current_cnt = 0;
+
+        this.hp = Math.max(this.hp - 50, 0);
+
+        if (this.hp <= 0) {
+            this.status = 6;
+            this.frame_current_cnt = 0;
+        }
     }
 
     is_collision(r1, r2) {
@@ -219,15 +232,15 @@ export class Player extends AcGameObject {
             }
         }
 
-        if (status === 4 || status === 5) {
+        if (status === 4 || status === 5 || status === 6) {
             if (
                 this.frame_current_cnt >=
                 (obj.frame_cnt - 1) * obj.frame_rate
             ) {
                 // when it's equal, the player will continually play one another frame
                 // so it's better to stop before the last frame
-                this.status = 0;
-                // this.frame_current_cnt = 0;
+                if (status === 6) this.frame_current_cnt--;
+                else this.status = 0;
             }
         }
 
