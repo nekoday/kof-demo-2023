@@ -28,11 +28,20 @@ export class GameMap extends AcGameObject {
                 </div>`
             )
         );
+
+        this.time_left = 60000; // ms
+        this.$timer = this.root.$kof.find(`.kof-head-timer`);
     }
 
     start() {}
 
     update() {
+        this.time_left -= this.timedelta;
+
+        if (this.time_left < 0) this.timedelta = 0;
+
+        this.$timer.text(parseInt(this.time_left / 1000));
+
         this.render();
     }
 
