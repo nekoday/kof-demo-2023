@@ -97,9 +97,20 @@ export class Player extends AcGameObject {
         }
     }
 
+    update_direction() {
+        let players = this.root.players;
+        if (players[0] && players[1]) {
+            let me = this,
+                you = players[1 - this.id];
+            if (me.x < you.x) me.direction = 1;
+            else me.direction = -1;
+        }
+    }
+
     update() {
         this.update_control();
         this.update_move();
+        this.update_direction();
 
         this.render();
     }
@@ -116,17 +127,37 @@ export class Player extends AcGameObject {
 
         let obj = this.animations.get(status);
         if (obj && obj.loaded) {
-            let k =
-                parseInt(this.frame_current_cnt / obj.frame_rate) %
-                obj.frame_cnt;
-            let image = obj.gif.frames[k].image;
-            this.ctx.drawImage(
-                image,
-                this.x,
-                this.y + obj.offset_y,
-                image.width * obj.scale,
-                image.height * obj.scale
-            );
+            if (this.direction > 0) {
+                let k =
+                    parseInt(this.frame_current_cnt / obj.frame_rate) %
+                    obj.frame_cnt;
+                let image = obj.gif.frames[k].image;
+                this.ctx.drawImage(
+                    image,
+                    this.x,
+                    this.y + obj.offset_y,
+                    image.width * obj.scale,
+                    image.height * obj.scale
+                );
+            } else {
+                this.ctx.save();
+
+                this.ctx.scale(-1, 1);
+                this.ctx.translate(-this.root.game_map.$canvas.width(), 0);
+
+                let k =
+                    parseInt(this.frame_current_cnt / obj.frame_rate) %
+                    obj.frame_cnt;
+                let image = obj.gif.frames[k].image;
+                this.ctx.drawImage(
+                    image,
+                    this.root.game_map.$canvas.width() - this.x - this.width,
+                    this.y + obj.offset_y,
+                    image.width * obj.scale,
+                    image.height * obj.scale
+                );
+                this.ctx.restore();
+            }
         }
 
         if (status === 4) {
