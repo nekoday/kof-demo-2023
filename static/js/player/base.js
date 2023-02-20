@@ -79,9 +79,7 @@ export class Player extends AcGameObject {
     }
 
     update_move() {
-        if (this.status === 3) {
-            this.vy += this.gravity;
-        }
+        this.vy += this.gravity;
 
         this.x += (this.vx * this.timedelta) / 1000;
         this.y += (this.vy * this.timedelta) / 1000;
@@ -89,7 +87,7 @@ export class Player extends AcGameObject {
         if (this.y > 450) {
             this.y = 450;
             this.vy = 0;
-            this.status = 0;
+            if (this.status === 3) this.status = 0;
         }
 
         if (this.x < 0) {
