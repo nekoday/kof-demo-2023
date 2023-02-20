@@ -40,6 +40,8 @@
     font-weight: 800;
     text-align: center;
     line-height: 50px;
+
+    user-select: none;
 }
 
 #kof > .kof-head > .kof-head-hp-1 {
@@ -53,11 +55,24 @@
 #kof > .kof-head > .kof-head-hp-0 > div {
     height: 100%;
     width: 100%;
-    background-color: lightgreen;
+    background-color: red;
     float: right;
 }
 
 #kof > .kof-head > .kof-head-hp-1 > div {
+    height: 100%;
+    width: 100%;
+    background-color: red;
+}
+
+#kof > .kof-head > .kof-head-hp-0 > div > div {
+    height: 100%;
+    width: 100%;
+    background-color: lightgreen;
+    float: right;
+}
+
+#kof > .kof-head > .kof-head-hp-1 > div > div {
     height: 100%;
     width: 100%;
     background-color: lightgreen;
