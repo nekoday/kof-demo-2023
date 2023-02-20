@@ -18,9 +18,9 @@ export class Player extends AcGameObject {
         this.vy = 0;
 
         this.speedx = 400; // ground move speed
-        this.speedy = -1000; // jump initial speed
+        this.speedy = -1300; // jump initial speed
 
-        this.gravity = 50;
+        this.gravity = 55;
 
         this.ctx = this.root.game_map.ctx;
         this.pressed_keys = this.root.game_map.controller.pressed_keys;
@@ -136,6 +136,7 @@ export class Player extends AcGameObject {
         if (this.hp <= 0) {
             this.status = 6;
             this.frame_current_cnt = 0;
+            this.vx = 0;
         }
     }
 
